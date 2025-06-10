@@ -32,12 +32,12 @@ o	Bonding curve for donations
 
 ## Installation
 1. Clone the Repo:
-
-cd kindle
+### git clone https://github.com/Soloctg/kindle
+### cd kindle
 
 2. Install Dependencies:
 - flutter pub get
-- 
+
 3. Run the App:
 
 
@@ -57,10 +57,3 @@ Have questions? Reach out:
 
 Email: solomon.iroegbu@gmail.com
 Twitter: @cotechgy
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
