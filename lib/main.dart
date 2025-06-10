@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(Kindle());
+void main() => runApp(const Kindle());
 
 class Kindle extends StatelessWidget {
   const Kindle({super.key});
@@ -10,42 +10,81 @@ class Kindle extends StatelessWidget {
     return MaterialApp(
       title: 'Web3 GoFundMe',
       theme: ThemeData(primarySwatch: Colors.indigo),
-      home: HomeScreen(),
-      routes: {'/create-post': (context) => CreatePostScreen()},
+      home: const HomeScreen(),
+      routes: {'/create-post': (context) => const CreatePostScreen()},
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  //const HomeScreen({Key? key}) : super(key: key);
+class Post {
+  final String title;
+  final String ticker;
+  final String description;
+  final double amountRaised;
 
-  // Sample data for demonstration purposes
-  // In a real app, this would be fetched from a backend or blockchain
-  final List<Map<String, dynamic>> samplePosts = [
-    {'title': 'Help build a school', 'ticker': '\$SCHOOL', 'amountRaised': 2.5},
-    {'title': 'Medical aid for John', 'ticker': '\$JOHN', 'amountRaised': 1.2},
+  Post({
+    required this.title,
+    required this.ticker,
+    required this.description,
+    this.amountRaised = 0.0,
+  });
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Post> posts = [
+    Post(
+      title: 'Help build a school',
+      ticker: '\$SCHOOL',
+      description: 'We need funds to build a rural school.',
+      amountRaised: 2.5,
+    ),
+    Post(
+      title: 'Medical aid for John',
+      ticker: '\$JOHN',
+      description: 'John needs surgery funds.',
+      amountRaised: 1.2,
+    ),
   ];
+
+  void _navigateToCreatePost() async {
+    final result = await Navigator.pushNamed(context, '/create-post');
+    if (result != null && result is Post) {
+      setState(() {
+        posts.add(result);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Web3 GoFundMe'),
+        title: const Text('Web3 GoFundMe'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => Navigator.pushNamed(context, '/create-post'),
+            icon: const Icon(Icons.add),
+            onPressed: _navigateToCreatePost,
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: samplePosts.length,
+        itemCount: posts.length,
         itemBuilder: (context, index) {
-          final post = samplePosts[index];
-          return ListTile(
-            title: Text(post['title']),
-            subtitle: Text(post['ticker']),
-            trailing: Text('${post['amountRaised']} SOL'),
+          final post = posts[index];
+          return Card(
+            margin: const EdgeInsets.all(8.0),
+            child: ListTile(
+              title: Text(post.title),
+              subtitle: Text(post.ticker),
+              trailing: Text('${post.amountRaised} SOL'),
+            ),
           );
         },
       ),
@@ -54,6 +93,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class CreatePostScreen extends StatefulWidget {
+  const CreatePostScreen({super.key});
+
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
 }
@@ -67,18 +108,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Simulate API call or bot notification
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Post Created for \$_ticker!')));
-      Navigator.pop(context);
+      final newPost = Post(
+        title: _title,
+        ticker: _ticker,
+        description: _description,
+      );
+      Navigator.pop(context, newPost);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Create Fundraiser')),
+      appBar: AppBar(title: const Text('Create Fundraiser')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -86,13 +128,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 onSaved: (val) => _title = val ?? '',
                 validator:
                     (val) => val == null || val.isEmpty ? 'Required' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Ticker (e.g. \$HELP)'),
+                decoration: const InputDecoration(
+                  labelText: 'Ticker (e.g. \$HELP)',
+                ),
                 onSaved: (val) => _ticker = val ?? '',
                 validator:
                     (val) =>
@@ -101,12 +145,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 onSaved: (val) => _description = val ?? '',
               ),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: _submit, child: Text('Submit')),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: _submit, child: const Text('Submit')),
             ],
           ),
         ),
