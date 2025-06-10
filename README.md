@@ -26,7 +26,12 @@ o	Bonding curve for donations
 - Flutter installed for development (if you're contributing).
 
 
-
+## Dependency
+- flutter_bloc: For state management.
+- solana_flutter: For interacting with the Solana blockchain.
+- firebase_auth or web3dart: For user authentication and wallet interaction.
+- http: For API requests.
+- flutter_secure_storage: For storing sensitive data like tokens.
 
 
 
