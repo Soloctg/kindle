@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kindle/main.dart';
+import 'src/features/auth/auth_screen.dart';
+//import 'src/features/home/home_screen.dart';
 import 'src/routes/app_routes.dart';
 
 class Kindle extends StatelessWidget {
@@ -11,7 +14,15 @@ class Kindle extends StatelessWidget {
       title: 'Web3 GoFundMe',
       theme: ThemeData.light(), // or dark theme
       initialRoute: '/',
-      routes: appRoutes, // Defined in app_routes.dart
+
+      routes: {
+        ...appRoutes,
+        '/auth': (context) => const AuthScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/create-post': (context) => const CreatePostScreen(),
+
+        //'/post-detail': (context) => PostDetailScreen(post: selectedPost),
+      }, // Defined in app_routes.dart
     );
   }
 }
