@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:solana/solana.dart';
-import '../../../main.dart'; // adjust the import if Post is defined elsewhere
+//import 'package:solana/solana.dart';
+//import '../../../main.dart'; // adjust the import if Post is defined elsewhere
 
 class DonationHistoryScreen extends StatelessWidget {
-  final Ed25519HDKeyPair keyPair;
-  final RpcClient rpcClient;
-  final Post post;
+  //final Ed25519HDKeyPair keyPair;
+  //final RpcClient rpcClient;
+  //final Post post;
 
   const DonationHistoryScreen({
     super.key,
-    required this.keyPair,
-    required this.rpcClient,
-    required this.post,
+    //required this.keyPair,
+    //required this.rpcClient,
+    // required this.post,
   });
 
-  Future<List<String>> _fetchTransactions() async {
-    final signatures = await rpcClient.getSignaturesForAddress(keyPair.address);
-    return signatures.map((e) => e.signature).toList();
-  }
+  //Future<List<String>> _fetchTransactions() async {
+  //final signatures = await rpcClient.getSignaturesForAddress(keyPair.address);
+  //return signatures.map((e) => e.signature).toList();
+  //}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${post.title} - Donations')),
+      //appBar: AppBar(title: Text('${post.title} - Donations')),
       body: FutureBuilder<List<String>>(
-        future: _fetchTransactions(),
+        future: Future.value(
+          [],
+        ), // Replace with _fetchTransactions() when implemented
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
