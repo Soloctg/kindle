@@ -189,7 +189,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+              hintStyle: const TextStyle(
+                color: Color(0x80FFFFFF),
+              ), // 50% opacity white
+
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
