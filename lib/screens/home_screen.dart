@@ -7,36 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:solana/solana.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Ensure this is in your pubspec.yaml
-
-class Post {
-  final String title;
-  final String ticker;
-  final String description;
-  final double amountRaised;
-
-  Post({
-    required this.title,
-    required this.ticker,
-    required this.description,
-    this.amountRaised = 0.0,
-  });
-
-  Map<String, dynamic> toMap() => {
-    'title': title,
-    'ticker': ticker,
-    'description': description,
-    'amount_raised': amountRaised,
-  };
-
-  factory Post.fromMap(Map<String, dynamic> map) {
-    return Post(
-      title: map['title'],
-      ticker: map['ticker'],
-      description: map['description'],
-      amountRaised: (map['amount_raised'] ?? 0).toDouble(),
-    );
-  }
-}
+//import 'package:kindle/models/post.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,6 +29,37 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadWalletAddress();
     fetchPosts();
+  }
+
+  Future<void> _handleDonation(Post post, double amount) async {
+    if (walletAddress == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please connect your wallet to donate.')),
+      );
+      return;
+    }
+
+    try {
+      // [Optional] Send SOL using Solana SDK
+      // await sendSol(wallet, post.creatorAddress, amount);
+
+      // Update Supabase 'amount_raised'
+      final newAmountRaised = post.amountRaised + amount;
+      await Supabase.instance.client
+          .from('posts')
+          .update({'amount_raised': newAmountRaised})
+          .eq('title', post.title);
+
+      await fetchPosts();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Donated $amount SOL to ${post.title}')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Donation failed: $e')));
+    }
   }
 
   Future<void> _loadWalletAddress() async {
@@ -112,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _navigateToCreatePost() async {
     final result = await Navigator.pushNamed(context, '/create-post');
     if (result != null && result is Post) {
-      await Supabase.instance.client.from('posts').insert(result.toMap());
+      //await Supabase.instance.client.from('posts').insert(result.toMap());
       fetchPosts();
     }
   }
@@ -156,7 +158,21 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            ...posts.map((post) => PostCard(post: post)),
+            ...posts.map(
+              (post) => PostCard(
+                post: post,
+                onDonate: (amount) => _handleDonation(post, amount),
+              ),
+            ),
+
+            //...posts.map((post) => PostCard(post: post)),
+            // if (posts.isEmpty)
+            //  const Center(
+            //  child: Text(
+            //    'No fundraisers available yet.',
+            //     style: TextStyle(color: Colors.grey),
+            //   ),
+            // ),
           ],
         ),
       ),
