@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:kindle/main.dart';
 import 'package:kindle/screens/home_screen.dart';
-import 'package:kindle/screens/web3_login_screen.dart';
+//import 'package:kindle/screens/web3_login_screen.dart';
 //import 'src/features/home/home_screen.dart';
 import 'src/routes/app_routes.dart';
 
@@ -21,7 +21,7 @@ class Kindle extends StatelessWidget {
         //'/auth': (context) => const AuthScreen(),
         '/home': (context) => const HomeScreen(),
         //'/create-post': (context) => const CreatePostScreen(),
-        '/web3-login': (context) => const Web3LoginScreen(),
+        //'/web3-login': (context) => const Web3LoginScreen(),
         //'/post-detail': (context) => PostDetailScreen(post: selectedPost),
       }, // Defined in app_routes.dart
     );
