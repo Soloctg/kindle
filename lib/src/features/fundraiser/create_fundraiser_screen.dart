@@ -119,7 +119,7 @@ class _CreateFundraiserScreenState extends State<CreateFundraiserScreen> {
               _titleController,
             ),
             const SizedBox(height: 16),
-            _buildInputField('Ticker', 'e.g. KIND', _tickerController),
+            _buildInputField('Ticker', '(e.g. \$HELP)', _tickerController),
             const SizedBox(height: 16),
             _buildInputField(
               'Total Supply (in SOL)',
