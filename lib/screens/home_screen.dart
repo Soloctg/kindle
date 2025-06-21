@@ -62,6 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Function to send SOL using Solana SDK
+
+  //load wallet address from SharedPreferences
   Future<void> _loadWalletAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final address = prefs.getString('wallet_address');
@@ -111,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => posts = data.map((e) => Post.fromMap(e)).toList());
   }
 
+  // Navigate to create post screen and handle result
+  // This function assumes you have a Post model with a fromMap constructor
   void _navigateToCreatePost() async {
     final result = await Navigator.pushNamed(context, '/create-post');
     if (result != null && result is Post) {
@@ -164,15 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 onDonate: (amount) => _handleDonation(post, amount),
               ),
             ),
-
-            //...posts.map((post) => PostCard(post: post)),
-            // if (posts.isEmpty)
-            //  const Center(
-            //  child: Text(
-            //    'No fundraisers available yet.',
-            //     style: TextStyle(color: Colors.grey),
-            //   ),
-            // ),
           ],
         ),
       ),

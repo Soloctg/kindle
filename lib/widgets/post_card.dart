@@ -32,8 +32,14 @@ class Post {
 class PostCard extends StatelessWidget {
   final Post post;
   final void Function(double amount)? onDonate;
+  final String? walletAddress;
 
-  const PostCard({super.key, required this.post, this.onDonate});
+  const PostCard({
+    super.key,
+    required this.post,
+    this.onDonate,
+    this.walletAddress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,7 @@ class PostCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.2),
+                    color: Color.fromRGBO(0, 128, 0, 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -129,7 +135,16 @@ class PostCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: () => _showDonationDialog(context),
+                onPressed:
+                    walletAddress == null
+                        ? () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Connect wallet before donating'),
+                            ),
+                          );
+                        }
+                        : () => _showDonationDialog(context),
               ),
             ),
           ],
@@ -152,7 +167,9 @@ class PostCard extends StatelessWidget {
             ),
             content: TextField(
               controller: amountController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               style: const TextStyle(color: Colors.white),
               decoration: const InputDecoration(
                 hintText: 'Amount in SOL',

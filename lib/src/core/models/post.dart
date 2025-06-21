@@ -65,7 +65,7 @@ class PostCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.2),
+                    color: Color.fromRGBO(0, 128, 0, 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
